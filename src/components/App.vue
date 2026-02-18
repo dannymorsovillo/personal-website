@@ -13,7 +13,10 @@
         <h1> {{ title }}</h1>
         <div class = "headshot-wrapper">
             <img src="/headshot.png" class="headshot" width="200" height= "200">
+             <p>An aspiring software engineer with a passion for mobile development and interests in backend engineering and machine learning.</p>
         </div>
+        <div>
+            <h2>Socials and Resume</h2>
         <ul>
             <li><a :href="github" target="_blank" class="links">
                 <img src="/github.svg" alt="Click me" width="50" height="50">
@@ -31,11 +34,10 @@
             </li>
         </ul>
         </div>
+        </div>
         </section>
 
-        <div>
-            <p>An aspiring software engineer with a passion for mobile development and interests in backend engineering and machine learning.</p>
-        </div>
+
 
         <section class="section" id="languages-and-tools">
         <h2>{{ second_tile }}</h2>
@@ -69,7 +71,7 @@
             </li>
             <li>
                 <h2>Raytracing Engine</h2>
-                <p>A raytracing engine built in C++ that simulates the way light interacts with objects to create realistic images.</p>
+                <p>A raytracing engine built in C++ that simulates the way light interacts with objects to create realistic images. Built with Peter Shirley's Ray Tracing in One Weekend. </p>
             </li>
             </ul>
         </section>
@@ -80,6 +82,7 @@
             <li>Educational: dlmorso@ilstu.edu</li>
         </h3>
         <p>Danny Morsovillo 2026</p>
+        <p> Created with Vue.js and deployed with Vercel.</p>
         <p>Privacy Policy - This site does not collect any personal data. </p>
         
     </section>
@@ -97,6 +100,7 @@ export default{
             linkedin: "https://www.linkedin.com/in/danielmorsovillo",
         }
     },
+
     mounted() {
     const sections = document.querySelectorAll('.section');
     const observer = new IntersectionObserver(
@@ -196,6 +200,11 @@ export default{
 
     .headshot {
       border-radius: 50%;
+    }
+    
+    .headshot-wrapper {
+        margin-bottom:20rem;
+
     }
 
     .section {
