@@ -1,6 +1,6 @@
 ```vue
 <template>
-    <div>
+   <div>
         <nav>
             <a href="#about">About Me</a>
             <a href="#languages-and-tools">Languages and Tools</a>
@@ -9,10 +9,10 @@
         </nav>
 
         <section class="section">
+        <div class="header">
         <h1> {{ title }}</h1>
-        <div id =contact>
-        <div>
-            <img src="/headshot.png" width="200" height= "200">
+        <div class = "headshot-wrapper">
+            <img src="/headshot.png" class="headshot" width="200" height= "200">
         </div>
         <ul>
             <li><a :href="github" target="_blank" class="links">
@@ -34,27 +34,24 @@
         </section>
 
         <div>
-            <p>An aspiring software engineer with a passion for iOS development and machine learning.</p>
+            <p>An aspiring software engineer with a passion for mobile development and interests in backend engineering and machine learning.</p>
         </div>
 
-        <section class="section">
+        <section class="section" id="languages-and-tools">
         <h2>{{ second_tile }}</h2>
-        <div id="languages-and-tools">
         <ul>
             <li><img src="/swift.svg" alt="Swift" width="50" height="50"></li>
             <li><img src="/C++.svg" alt="C++" width="50" height="50"></li>
             <li><img src="/Java.svg" alt="Java" width="50" height="50"></li>
             <li><img src="/Python.svg" alt="Python" width="50" height="50"></li>
-            <li> <img src="/vue.svg" alt="Vue.js" width="50" height="50"></li>
-            <li>  <img src="/react.svg" alt="React" width="50" height="50"></li>
+            <li><img src="/vue.svg" alt="Vue.js" width="50" height="50"></li>
+            <li><img src="/react.svg" alt="React" width="50" height="50"></li>
         </ul>
-        </div>
         </section>
 
-        <section class="section">
-       <div id="projects">
+        <section class="section" id="projects">
         <h2>Projects</h2>
-        <><ul>
+        <ul>
             <li>
                 <h2>fairwayd iOS App</h2>
                 <p>A mobile application that helps golfers find new courses, reviews courses, and recieve AI based recommendations.</p>
@@ -74,8 +71,17 @@
                 <h2>Raytracing Engine</h2>
                 <p>A raytracing engine built in C++ that simulates the way light interacts with objects to create realistic images.</p>
             </li>
-        </ul>
-</div>
+            </ul>
+        </section>
+    <section class="section" id="contact">
+        <h3>
+            <li>708-270-7899</li>
+            <li>Personal: dangino3130@gmail.com</li>
+            <li>Educational: dlmorso@ilstu.edu</li>
+        </h3>
+        <p>Danny Morsovillo 2026</p>
+        <p>Privacy Policy - This site does not collect any personal data. </p>
+        
     </section>
 </div>
 </template>
@@ -88,12 +94,27 @@ export default{
             title: "Danny Morsovillo",
             second_tile: "Languages and Tools",
             github: "https://github.com/dannymorsovillo",
-            linkedin: "https://www.linkedin.com/in/danielmorsovillo"
+            linkedin: "https://www.linkedin.com/in/danielmorsovillo",
         }
     },
-    methods: {
-        
-    }
+    mounted() {
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    entry.target.classList.remove('visible');
+                }
+            });
+        },
+        { threshold: 0.15 }
+    );
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+}
 }
 
 </script>
@@ -105,12 +126,20 @@ export default{
         padding: 0;
     }
 
+    html {
+        scroll-behavior: smooth;
+    }
+
 </style>
 
 <style scoped >
+    .header{
+        text-align:center;
+    }
     nav {
         background-color: #333;
         padding: 15px;
+         font-family: 'Arial', sans-serif;
         text-align: center;
     }
 
@@ -126,7 +155,7 @@ export default{
 
 
     .links {
-        margin-top:1rem;
+        color:white;
     }
 
     ul {
@@ -152,24 +181,37 @@ export default{
          text-align: center;  
     }
 
-    h1 {
+    h1, h2 {
         color: white;
         font-family: 'Arial', sans-serif;
         text-align: center;  
     }
 
-    h2 {
-        color: white;
+    h3 {
+        text-align:center;
+        color:white;
         font-family: 'Arial', sans-serif;
-        text-align: center;
-        
+    }
+
+
+    .headshot {
+      border-radius: 50%;
     }
 
     .section {
         padding: 60px 20px;  
         max-width: 900px;    
-        margin: 0 auto;     
+        margin: 0 auto;
+        opacity: 0;
+        transform: translateY(100px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
     }
+
+    .section.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
 
    
     #projects > ul {
@@ -213,6 +255,9 @@ export default{
         margin-top: -5px;
         font-family: 'Arial', sans-serif;
     }
+
+
+    
 
 
         
