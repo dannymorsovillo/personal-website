@@ -211,12 +211,15 @@ export default{
         margin-left: 15px;
     }
 
-    p{
+    p {
         font-size: 18px;
         padding: 0 20px;
         color: white;
         font-family: 'Arial', sans-serif;
-        text-align: center;  
+        text-align: left;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     h1, h2 {
@@ -245,6 +248,10 @@ export default{
         padding: 60px 20px;
         max-width: 900px;
         margin: 0 auto;
+    }
+
+    .section-wrapper, .project-wrapper {
+        overflow:hidden;
     }
 
     .section {
