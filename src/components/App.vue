@@ -339,6 +339,11 @@ export default{
         height: 400px;
     }
 
+     #contact li {
+        display: block;
+        margin: 10px;
+    }
+
    
 }
 
