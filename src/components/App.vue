@@ -322,8 +322,23 @@ export default{
 
     @media (max-width: 768px) {
 
+    nav a {
+         margin: 0 8px;
+        font-size: 12px;
+    }
+
     .headshot-wrapper {
         margin-bottom: 5rem;
+    }
+
+     #languages-and-tools ul {
+        display: flex;
+        overflow-x: auto;
+        gap: 15px;
+    }
+
+    #languages-and-tools li {
+        flex-shrink: 0;
     }
 
     #projects .section > ul > li {
