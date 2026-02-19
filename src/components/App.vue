@@ -258,21 +258,16 @@ export default{
     }
 
 
-    .section {
+    .section, .project {
         opacity: 0;
-        transform: none;
-        transition: opacity 0.7s ease;
+        transform: translate(100px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
     }
 
-    .project {
-        opacity: 0;
-        transform: none;
-        transition: opacity 0.7s ease;
-    }
 
     .section.visible, .project.visible {
         opacity: 1;
-        transform: none;
+        transform: translateY(0);
     }
 
 
@@ -372,6 +367,17 @@ export default{
      #contact li {
         display: block;
         margin: 10px;
+    }
+
+    .section,
+    .project {
+        transform: scale(0.95);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .section.visible,
+    .project.visible {
+        transform: scale(1);
     }
 
    
