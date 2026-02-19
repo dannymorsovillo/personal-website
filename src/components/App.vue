@@ -63,7 +63,7 @@
             <li class="project-wrapper">
                 <div class="project">
                 <h2>fairwayd iOS App</h2>
-                <p>A mobile application that helps golfers find new courses, reviews courses, and receive AI based recommendations.</p>
+                <p>A mobile application that helps golfers find new courses, review courses, and receive AI based recommendations.</p>
                 <ul class="scroll-row">
                     <li><img src="/explore.png" alt="explore" width="250" height="500" class="scroll-row-img"></li>
                     <li><img src="/recommend.png" alt="recommend" width="250" height="500" class="scroll-row-img"></li>
