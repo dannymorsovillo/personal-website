@@ -66,9 +66,9 @@
                 <p>A mobile application that helps golfers find new courses, reviews courses, and receive AI based recommendations.</p>
                 <ul class="scroll-row">
                     <li><img src="/explore.png" alt="explore" width="250" height="500" class="scroll-row-img"></li>
-                    <li><img src="/recommend.png" alt="recommend" width="250" height="500" class="scroll-row-img">></li>
-                    <li><img src="/howitworks.png" alt="howItWorks" width="250" height="500" class="scroll-row-img">></li>
-                    <li><img src="/coursedetail.png" alt="courseDetail" width="250" height="500" class="scroll-row-img">></li>
+                    <li><img src="/recommend.png" alt="recommend" width="250" height="500" class="scroll-row-img"></li>
+                    <li><img src="/howitworks.png" alt="howItWorks" width="250" height="500" class="scroll-row-img"></li>
+                    <li><img src="/coursedetail.png" alt="courseDetail" width="250" height="500" class="scroll-row-img"></li>
                 </ul>
             </div>
             </li>
@@ -137,7 +137,7 @@ export default{
                 }
             });
         },
-        { threshold: 0.15 }
+        { threshold: 0.05 }
     );
     wrappers.forEach(wrapper => {
         observer.observe(wrapper);
@@ -323,8 +323,15 @@ export default{
     @media (max-width: 768px) {
 
     nav a {
-         margin: 0 8px;
+        margin: 0 8px;
         font-size: 12px;
+    }
+
+    nav {
+        display:flex;
+        flex-wrap:wrap;
+        justify-content: center;
+        gap:10px;
     }
 
     .headshot-wrapper {
