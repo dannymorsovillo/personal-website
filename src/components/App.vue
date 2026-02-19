@@ -170,6 +170,7 @@ export default{
         top:0;
         z-index: 100;
         width:100%;
+        box-sizing: border-box;
         background-color: #333;
         padding: 15px;
         font-family: 'Arial', sans-serif;
@@ -210,7 +211,7 @@ export default{
         margin-left: 15px;
     }
 
-    P {
+    p{
         font-size: 18px;
         padding: 0 20px;
         color: white;
