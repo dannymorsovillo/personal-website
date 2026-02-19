@@ -133,11 +133,14 @@ export default{
                 if (entry.isIntersecting) {
                     inner.classList.add('visible');
                 } else {
-                    inner.classList.remove('visible');
+                    const rect = entry.boundingClientRect;
+                    if (rect.top > 0) {
+                        inner.classList.remove('visible');
+                    }
                 }
             });
         },
-        {  threshold: 0.05, rootMargin: '-50px 0px'  }
+        { threshold: 0 }
     );
     wrappers.forEach(wrapper => {
         observer.observe(wrapper);
@@ -333,12 +336,12 @@ export default{
 
     nav a {
         margin: 0 8px;
-        font-size: 12px;
+        font-size: 10px;
     }
 
     nav {
         display:flex;
-        flex-wrap:wrap;
+        white-space: nonwrap;
         justify-content: center;
         gap:10px;
     }
