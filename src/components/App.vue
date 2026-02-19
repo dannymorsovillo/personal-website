@@ -8,7 +8,8 @@
             <a href="#contact">Contact Me</a>
         </nav>
 
-        <section class="section">
+        <section class="section-wrapper" id="about">
+        <div class="section">
         <div class="header">
         <h1> {{ title }}</h1>
         <div class = "headshot-wrapper">
@@ -16,7 +17,7 @@
              <p>An aspiring software engineer with a passion for mobile development and interests in backend engineering and machine learning.</p>
         </div>
         <div>
-            <h2>Socials and Resume</h2>
+            <h2>{{second_title}}</h2>
         <ul>
             <li><a :href="github" target="_blank" class="links">
                 <img src="/github.svg" alt="Click me" width="50" height="50">
@@ -29,18 +30,20 @@
            <li>
                 <a href="/resume.pdf" download class="links">
                     <img src="/download.svg" alt="Download Resume" width="50" height="50">
-                    <span class="download-text">Download my resume here</span>
+                    <span class="download-text">Resume</span>
                 </a>
             </li>
         </ul>
+        </div>
         </div>
         </div>
         </section>
 
 
 
-        <section class="section" id="languages-and-tools">
-        <h2>{{ second_tile }}</h2>
+        <section class="section-wrapper" id="languages-and-tools">
+        <div class="section">
+        <h2>{{ third_title }}</h2>
         <ul>
             <li><img src="/swift.svg" alt="Swift" width="50" height="50"></li>
             <li><img src="/C++.svg" alt="C++" width="50" height="50"></li>
@@ -49,33 +52,51 @@
             <li><img src="/vue.svg" alt="Vue.js" width="50" height="50"></li>
             <li><img src="/react.svg" alt="React" width="50" height="50"></li>
         </ul>
+        </div>
         </section>
 
-        <section class="section" id="projects">
-        <h2>Projects</h2>
+        <section class="section-wrapper" id="projects">
+        <div class="section">
+        <h2>{{fourth_title }}</h2>
+        <h3>More Info on GitHub</h3>
         <ul>
-            <li>
+            <li class="project-wrapper">
+                <div class="project">
                 <h2>fairwayd iOS App</h2>
-                <p>A mobile application that helps golfers find new courses, reviews courses, and recieve AI based recommendations.</p>
+                <p>A mobile application that helps golfers find new courses, reviews courses, and receive AI based recommendations.</p>
                 <ul class="scroll-row">
-                    <li><img src="/explore.png" alt="explore" width="250" height="500"></li>
-                    <li><img src="/recommend.png" alt="recommend" width="250" height="500"></li>
-                    <li><img src="/howitworks.png" alt="howItWorks" width="250" height="500"></li>
-                    <li><img src="/coursedetail.png" alt="courseDetail" width="250" height="500"></li>
+                    <li><img src="/explore.png" alt="explore" width="250" height="500" class="scroll-row-img"></li>
+                    <li><img src="/recommend.png" alt="recommend" width="250" height="500" class="scroll-row-img">></li>
+                    <li><img src="/howitworks.png" alt="howItWorks" width="250" height="500" class="scroll-row-img">></li>
+                    <li><img src="/coursedetail.png" alt="courseDetail" width="250" height="500" class="scroll-row-img">></li>
                 </ul>
+            </div>
             </li>
-            <li>
-                <h2>Website for Math Workshop</h2>
+            <li class="project-wrapper">
+                <div class="project">
+                    <h2><a href="https://makemathcounttoday.com/">Make Math Count </a></h2>
                 <p>A website for a math workshop sequence that provides educators with a streamlined process to guide their students to success.</p>
                 <img src="/makemathcount.png" alt="makemathcount" class="screenshot">
+            </div>
             </li>
-            <li>
+            <li class = "project-wrapper">
+                <div class="project">
+                    <img src="/makemathcountabout.png" alt="makemathcount" class="screenshot">
+                </div>
+            </li>
+            <li class="project-wrapper">
+                <div class="project">
                 <h2>Raytracing Engine</h2>
                 <p>A raytracing engine built in C++ that simulates the way light interacts with objects to create realistic images. Built with Peter Shirley's Ray Tracing in One Weekend. </p>
+                    <img src="/output.png" alt ="raytracer-output" class="screenshot">
+                </div>
             </li>
             </ul>
+        </div>
         </section>
-    <section class="section" id="contact">
+
+    <section class="section-wrapper" id="contact">
+        <div class="section">
         <h3>
             <li>708-270-7899</li>
             <li>Personal: dangino3130@gmail.com</li>
@@ -84,7 +105,7 @@
         <p>Danny Morsovillo 2026</p>
         <p> Created with Vue.js and deployed with Vercel.</p>
         <p>Privacy Policy - This site does not collect any personal data. </p>
-        
+        </div>
     </section>
 </div>
 </template>
@@ -93,30 +114,33 @@
 export default{
     data() {
         return {
-            // text and links
+            // titles and links
             title: "Danny Morsovillo",
-            second_tile: "Languages and Tools",
+            second_title: "Socials and Resume",
+            third_title: "Languages and Tools",
+            fourth_title: "Projects",
             github: "https://github.com/dannymorsovillo",
             linkedin: "https://www.linkedin.com/in/danielmorsovillo",
         }
     },
 
     mounted() {
-    const sections = document.querySelectorAll('.section');
+    const wrappers = document.querySelectorAll('.section-wrapper, .project-wrapper');
     const observer = new IntersectionObserver(
         (entries) => {
             entries.forEach(entry => {
+                const inner = entry.target.querySelector('.section, .project');
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                    inner.classList.add('visible');
                 } else {
-                    entry.target.classList.remove('visible');
+                    inner.classList.remove('visible');
                 }
             });
         },
         { threshold: 0.15 }
     );
-    sections.forEach(section => {
-        observer.observe(section);
+    wrappers.forEach(wrapper => {
+        observer.observe(wrapper);
     });
 }
 }
@@ -125,7 +149,7 @@ export default{
 
 <style>
     body {
-      background: linear-gradient(to right, black, grey);
+        background: linear-gradient(to right, black, grey);
         margin: 0;
         padding: 0;
     }
@@ -140,10 +164,15 @@ export default{
     .header{
         text-align:center;
     }
+
     nav {
+        position:fixed;
+        top:0;
+        z-index: 100;
+        width:100%;
         background-color: #333;
         padding: 15px;
-         font-family: 'Arial', sans-serif;
+        font-family: 'Arial', sans-serif;
         text-align: center;
     }
 
@@ -157,6 +186,9 @@ export default{
         color: #ddd;
     }
 
+    a {
+        color:white;
+    }
 
     .links {
         color:white;
@@ -172,17 +204,17 @@ export default{
   
     li{
         display: inline-block;
+        position: relative;
         text-align:center;
-        margin-right:15px;
+        margin-right: 15px;
         margin-left: 15px;
-        
     }
 
     P {
         font-size: 18px;
         color: white;
         font-family: 'Arial', sans-serif;
-         text-align: center;  
+        text-align: center;  
     }
 
     h1, h2 {
@@ -203,14 +235,23 @@ export default{
     }
     
     .headshot-wrapper {
-        margin-bottom:20rem;
+        margin-bottom:15rem;
 
     }
 
-    .section {
-        padding: 60px 20px;  
-        max-width: 900px;    
+    .section-wrapper {
+        padding: 60px 20px;
+        max-width: 900px;
         margin: 0 auto;
+    }
+
+    .section {
+        opacity: 0;
+        transform: translateY(100px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .project {
         opacity: 0;
         transform: translateY(100px);
         transition: opacity 0.7s ease, transform 0.7s ease;
@@ -221,13 +262,17 @@ export default{
         transform: translateY(0);
     }
 
+    .project.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-   
-    #projects > ul {
+
+    #projects .section > ul {
         text-align: left;
     }
 
-    #projects > ul > li {
+    #projects .section > ul > li {
         display: block;
         text-align: center;
         margin: 0;
@@ -235,7 +280,7 @@ export default{
 
     }
 
-    #projects > ul > li:last-child {
+    #projects .section > ul > li:last-child {
         margin-bottom: 0; 
     }
 
@@ -247,29 +292,56 @@ export default{
         justify-content: flex-start;
     }
 
+    .scroll-row-img {
+        border-radius: 10px;
+    }
+
     .scroll-row li {
         flex-shrink: 0;
         margin: 0; 
     }
 
     .screenshot {
-         width: 100%;
+        width: 100%;
         height: auto;
+        border-radius:10px;
     }
 
     .download-text {
         display: block;
         color: white;
         font-size: 14px;
-        margin-top: -5px;
         font-family: 'Arial', sans-serif;
+        position: absolute;
+        top: 55px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
     }
 
 
-    
+    @media (max-width: 768px) {
+
+    .headshot-wrapper {
+        margin-bottom: 5rem;
+    }
+
+    #projects .section > ul > li {
+        margin-bottom: 100px;
+    }
+
+    .scroll-row {
+        justify-content: flex-start;
+    }
+
+    .scroll-row img {
+        width: 200px;
+        height: 400px;
+    }
+
+   
+}
 
 
         
 </style>
-
-
