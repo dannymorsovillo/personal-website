@@ -133,14 +133,11 @@ export default{
                 if (entry.isIntersecting) {
                     inner.classList.add('visible');
                 } else {
-                    const rect = entry.boundingClientRect;
-                    if (rect.top > 0) {
-                        inner.classList.remove('visible');
-                    }
+                    inner.classList.remove('visible');
                 }
             });
         },
-        { threshold: 0 }
+        {  threshold: 0 }
     );
     wrappers.forEach(wrapper => {
         observer.observe(wrapper);
@@ -260,7 +257,7 @@ export default{
 
     .section, .project {
         opacity: 0;
-        transform: translate(100px);
+        transform: translateY(100px);
         transition: opacity 0.7s ease, transform 0.7s ease;
     }
 
