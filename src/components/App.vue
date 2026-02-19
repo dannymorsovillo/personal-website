@@ -133,11 +133,14 @@ export default{
                 if (entry.isIntersecting) {
                     inner.classList.add('visible');
                 } else {
-                    inner.classList.remove('visible');
+                    const rect = entry.boundingClientRect;
+                    if (rect.top > 0) {
+                        inner.classList.remove('visible');
+                    }
                 }
             });
         },
-        {  threshold: 0}
+        { threshold: 0 }
     );
     wrappers.forEach(wrapper => {
         observer.observe(wrapper);
