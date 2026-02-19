@@ -133,14 +133,11 @@ export default{
                 if (entry.isIntersecting) {
                     inner.classList.add('visible');
                 } else {
-                    const rect = entry.boundingClientRect;
-                    if (rect.top > 0) {
-                        inner.classList.remove('visible');
-                    }
+                    inner.classList.remove('visible');
                 }
             });
         },
-        { threshold: 0 }
+        {  threshold: 0}
     );
     wrappers.forEach(wrapper => {
         observer.observe(wrapper);
@@ -257,26 +254,22 @@ export default{
         overflow:hidden;
     }
 
+
     .section {
         opacity: 0;
-        transform: translateY(100px);
-        transition: opacity 0.7s ease, transform 0.7s ease;
+        transform: none;
+        transition: opacity 0.7s ease;
     }
 
     .project {
         opacity: 0;
-        transform: translateY(100px);
-        transition: opacity 0.7s ease, transform 0.7s ease;
+        transform: none;
+        transition: opacity 0.7s ease;
     }
 
-    .section.visible {
+    .section.visible, .project.visible {
         opacity: 1;
-        transform: translateY(0);
-    }
-
-    .project.visible {
-        opacity: 1;
-        transform: translateY(0);
+        transform: none;
     }
 
 
