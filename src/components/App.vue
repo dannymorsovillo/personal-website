@@ -137,7 +137,7 @@ export default{
                 }
             });
         },
-        { threshold: 0.05 }
+        {  threshold: 0.05, rootMargin: '-50px 0px'  }
     );
     wrappers.forEach(wrapper => {
         observer.observe(wrapper);
@@ -212,6 +212,7 @@ export default{
 
     P {
         font-size: 18px;
+        padding: 0 20px;
         color: white;
         font-family: 'Arial', sans-serif;
         text-align: center;  
