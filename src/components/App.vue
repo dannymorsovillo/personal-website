@@ -103,7 +103,7 @@
             <li>Educational: dlmorso@ilstu.edu</li>
         </h3>
         <p>Danny Morsovillo 2026</p>
-        <p> Created with Vue.js and deployed with Vercel.</p>
+        <p>Created with Vue.js and deployed with Vercel.</p>
         <p>Privacy Policy - This site does not collect any personal data. </p>
         </div>
     </section>
@@ -234,6 +234,19 @@ export default{
         text-align:center;
         color:white;
         font-family: 'Arial', sans-serif;
+    }
+
+    #contact h3 {
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 20px;
+    }
+
+    #contact h3 li {
+        display: block;
+        text-align: left;
+        margin: 0;
     }
 
 
