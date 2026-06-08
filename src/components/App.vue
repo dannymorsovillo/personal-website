@@ -14,7 +14,7 @@
         <h1> {{ title }}</h1>
         <div class = "headshot-wrapper">
             <img src="/headshot.png" class="headshot" width="200" height= "200">
-             <p>An aspiring software engineer with a passion for mobile development and interests in backend engineering and machine learning.</p>
+             <p style="text-align: center;">Software Engineer Intern on the State Farm Mobile App Team.</p>
         </div>
         <div>
             <h2>{{second_title}}</h2>
