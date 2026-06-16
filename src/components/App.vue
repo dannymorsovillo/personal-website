@@ -23,11 +23,11 @@
         <div class = "bio">
             <h2>{{second_title}}</h2>
         <ul>
-            <li><a :href="github" target="_blank" class="links">
+            <li><a href="github" target="_blank" class="links">
                 <img src="/github.svg" alt="Click me" width="50" height="50">
                 </a>
             </li>
-            <li><a :href="linkedin" target="_blank" class="links">
+            <li><a href="linkedin" target="_blank" class="links">
                 <img src="/linkedin.svg" alt="Click me" width="50" height="50">
                 </a>
             </li>
@@ -201,16 +201,16 @@ export default{
 </script>
 
 <style>
-    body {
+    html, body {
         background: linear-gradient(to right, black, grey);
         margin: 0;
         padding: 0;
+        min-height: 100%;
+        overscroll-behavior: none;
     }
 
     html {
         scroll-behavior: smooth;
-        margin: 0;
-        padding: 0;
     }
 
 </style>
@@ -247,6 +247,7 @@ export default{
         color: #ddd;
         transform: scale(1.1) translateY(-5px);
     }
+
 
     a {
         color:white;
@@ -363,10 +364,6 @@ export default{
         white-space: nowrap;
     }
 
-    #contact ul {
-        font-family: ui-monospace, Menlo, monospace;
-        color: white;
-    }
 
     #fairwayd-gallery,
     #math-gallery,
@@ -449,20 +446,29 @@ export default{
     #math-gallery:hover .math1, #math-gallery.is-active .math1 { transform: rotate(-8deg) translate(-180px, 0); }
     #math-gallery:hover .math2, #math-gallery.is-active .math2 { transform: rotate(8deg) translate(180px, 0); }
 
+
+    #contact ul li {
+         transition: transform 0.3s ease;
+         cursor: pointer;
+    }
+
+    #contact ul li:hover {
+        transform: scale(1.1);
+        transform: translateY(-10px);  
+    }
+
+    .bio ul li {
+         transition: transform 0.3s ease;
+         cursor: pointer;
+    }
+
+    .bio ul li:hover {
+        transform: scale(1.1);
+        transform: translateY(-10px);
+    }
+
     @media (max-width: 768px) {
 
-    nav a {
-        margin: 0 8px;
-        font-size: 10px;
-    }
-
-    nav {
-        display:flex;
-        white-space: nonwrap;
-        justify-content: center;
-        text-align: center;
-        gap:10px;
-    }
 
     .headshot-wrapper {
         margin-bottom: 120px;
@@ -484,10 +490,7 @@ export default{
     }
 
 
-     #contact li {
-        display: block;
-        margin: 10px;
-    }
+     
 
     #contact ul {
         display:flex;
