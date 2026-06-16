@@ -103,12 +103,12 @@
         <div class="section">
         <ul>
            <li><a href="mailto:danielmorsovillo31@gmail.com" target="_blank" class="bottom-links">
-                <img src="/email.svg" alt="Click me" width="50" height="50">
+                <img src="/email.svg" alt="Click me" width="25" height="25">
                 </a>
            </li>
            <li>
             <a href="tel:+17082707899" target="_blank" class="bottom-links">
-                <img src="/phone.svg" alt="Click me" width="50" height="50">
+                <img src="/phone.svg" alt="Click me" width="25" height="25">
                 </a>
            </li>
         </ul>
@@ -202,16 +202,15 @@ export default{
 
 <style>
     html, body {
-        background: linear-gradient(to right, black, grey);
+        background: linear-gradient(to bottom, black, grey);
+        background-attachment: fixed;       
         margin: 0;
         padding: 0;
-        min-height: 100%;
+        height: 100%;
         overscroll-behavior: none;
     }
 
-    html {
-        scroll-behavior: smooth;
-    }
+
 
 </style>
 
@@ -229,8 +228,8 @@ export default{
         background-color: #333;
         padding: 15px;
         font-family: ui-monospace, Menlo, monospace;
-        text-align: center;
-
+        justify-content: center;
+        display:flex;
     }
 
     nav a {
@@ -468,7 +467,11 @@ export default{
     }
 
     @media (max-width: 768px) {
+    
 
+    nav {
+
+    }
 
     .headshot-wrapper {
         margin-bottom: 120px;
