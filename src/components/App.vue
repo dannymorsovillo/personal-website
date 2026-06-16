@@ -1,22 +1,24 @@
-```vue
+
 <template>
    <div>
         <nav>
-            <a href="#about">About Me</a>
-            <a href="#languages-and-tools">Languages and Tools</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact Me</a>
+            <a href="#about">about me</a>
+            <a href="#languages-and-tools">languages and tools</a>
+            <a href="#projects">projects</a>
+            <a href="#contact">contact me</a>
         </nav>
 
         <section class="section-wrapper" id="about">
         <div class="section">
         <div class="header">
-        <h1> {{ title }}</h1>
+        <h1>
+            <span ref="typedElement" class="typed"></span>
+        </h1>
         <div class = "headshot-wrapper">
             <img src="/headshot.png" class="headshot" width="200" height= "200">
-             <p style="text-align: center;">Software Engineer Intern on the State Farm Mobile App Team.</p>
+             <p style="text-align: center;">software engineer intern on the state farm mobile app team.</p>
         </div>
-        <div>
+        <div class = "bio">
             <h2>{{second_title}}</h2>
         <ul>
             <li><a :href="github" target="_blank" class="links">
@@ -30,7 +32,7 @@
            <li>
                 <a href="/resume.pdf" download class="links">
                     <img src="/download.svg" alt="Download Resume" width="50" height="50">
-                    <span class="download-text">Resume</span>
+                    <span class="download-text">resume</span>
                 </a>
             </li>
         </ul>
@@ -58,37 +60,37 @@
         <section class="section-wrapper" id="projects">
         <div class="section">
         <h2>{{fourth_title }}</h2>
-        <h3>More Info on GitHub</h3>
+        <h3>more info on GitHub</h3>
         <ul>
             <li class="project-wrapper">
                 <div class="project">
                 <h2>fairwayd iOS App</h2>
-                <p>A mobile application that helps golfers find new courses, review courses, and receive AI based recommendations.</p>
-                <ul class="scroll-row">
-                    <li><img src="/explore.png" alt="explore" width="250" height="500" class="scroll-row-img"></li>
-                    <li><img src="/recommend.png" alt="recommend" width="250" height="500" class="scroll-row-img"></li>
-                    <li><img src="/howitworks.png" alt="howItWorks" width="250" height="500" class="scroll-row-img"></li>
-                    <li><img src="/coursedetail.png" alt="courseDetail" width="250" height="500" class="scroll-row-img"></li>
-                </ul>
-            </div>
-            </li>
-            <li class="project-wrapper">
-                <div class="project">
-                    <h2><a href="https://makemathcounttoday.com/">Make Math Count </a></h2>
-                <p>A website for a math workshop sequence that provides educators with a streamlined process to guide their students to success.</p>
-                <img src="/makemathcount.png" alt="makemathcount" class="screenshot">
-            </div>
-            </li>
-            <li class = "project-wrapper">
-                <div class="project">
-                    <img src="/makemathcountabout.png" alt="makemathcount" class="screenshot">
+                <p> mobile application that helps golfers find new courses, review courses, and receive AI based recommendations.</p>
+                <div id="fairwayd-gallery">
+                    <img src="/explore.png" alt="explore" width="250" height="500" class="photo1">
+                    <img src="/recommend.png" alt="recommend" width="250" height="500" class="photo2">
+                    <img src="/howitworks.png" alt="howItWorks" width="250" height="500" class="photo3">
+                    <img src="/coursedetail.png" alt="courseDetail" width="250" height="500" class="photo4">
                 </div>
+            </div>
             </li>
             <li class="project-wrapper">
                 <div class="project">
-                <h2>Raytracing Engine</h2>
-                <p>A raytracing engine built in C++ that simulates the way light interacts with objects to create realistic images. Built with Peter Shirley's Ray Tracing in One Weekend. </p>
+                <h2><a href="https://makemathcounttoday.com/">make math count </a></h2>
+                <p>a website for a math workshop sequence that provides educators with a streamlined process to guide their students to success.</p>
+                <div id="math-gallery">
+                    <img src="/makemathcount.png" alt="makemathcount" class="math1">
+                    <img src="/makemathcountabout.png" alt="makemathcount" class="math2">
+                    </div>
+            </div>
+        </li>
+        <li class="project-wrapper">
+                <div class="project">
+                <h2>raytracing engine</h2>
+                <p>a raytracing engine built in C++ that simulates the way light interacts with objects to create realistic images. Built with Peter Shirley's Ray Tracing in One Weekend. </p>
+                <div id="ray-gallery">
                     <img src="/output.png" alt ="raytracer-output" class="screenshot">
+                    </div>
                 </div>
             </li>
             </ul>
@@ -97,54 +99,74 @@
 
     <section class="section-wrapper" id="contact">
         <div class="section">
-        <h3>
-            <li>708-270-7899</li>
-            <li>Personal: dangino3130@gmail.com</li>
-            <li>Educational: dlmorso@ilstu.edu</li>
-        </h3>
-        <p>Danny Morsovillo 2026</p>
-        <p>Created with Vue.js and deployed with Vercel.</p>
-        <p>Privacy Policy - This site does not collect any personal data. </p>
+        <ul>
+           <li><a :href="phone" target="_blank" class="bottom-links">
+                <img src="/email.svg" alt="Click me" width="50" height="50">
+                </a>
+           </li>
+           <li>
+            <a :href="phone" target="_blank" class="bottom-links">
+                <img src="/phone.svg" alt="Click me" width="50" height="50">
+                </a>
+           </li>
+        </ul>
+        <p style="text-align: center; font-size: smaller;">
+            @2026 danny morsovillo. all rights reserved.
+        </p>
         </div>
     </section>
 </div>
 </template>
 
 <script>
+import Typed from 'typed.js'
 export default{
     data() {
         return {
             // titles and links
-            title: "Danny Morsovillo",
-            second_title: "Socials and Resume",
-            third_title: "Languages and Tools",
-            fourth_title: "Projects",
+            second_title: "socials and resume",
+            third_title: "languages and tools",
+            fourth_title: "projects",
             github: "https://github.com/dannymorsovillo",
             linkedin: "https://www.linkedin.com/in/danielmorsovillo",
+            phone: "708-270-7899",
+            email: "danielmorsovillo31@gmail.com"
         }
     },
 
     mounted() {
-    const wrappers = document.querySelectorAll('.section-wrapper, .project-wrapper');
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach(entry => {
-                const inner = entry.target.querySelector('.section, .project');
-                if (entry.isIntersecting) {
-                    inner.classList.add('visible');
-                } else {
-                    if (entry.boundingClientRect.top > 0) {
-                        inner.classList.remove('visible');
+        const el = this.$refs.typedElement;
+        this.typedInstance = new Typed(el, {
+            strings: ["hello", "i'm danny", "welcome to", "my portfolio website" ],
+            typedSpeed:0,
+            backSpeed:0,
+        });
+
+        const wrappers = document.querySelectorAll('.section-wrapper, .project-wrapper');
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    const inner = entry.target.querySelector('.section, .project');
+                    if (entry.isIntersecting) {
+                        inner.classList.add('visible');
+                    } else {
+                        if (entry.boundingClientRect.top > 0) {
+                            inner.classList.remove('visible');
+                        }
                     }
-                }
-            });
-        },
-        { threshold: 0 }
-    );
-    wrappers.forEach(wrapper => {
-        observer.observe(wrapper);
-    });
-}
+                });
+            },
+            { threshold: 0 }
+        );
+        wrappers.forEach(wrapper => {
+            observer.observe(wrapper);
+        });
+    },
+    beforeUnmount() {
+        if (this.typedInstance) {
+            this.typedInstance.destroy();
+        }
+    }
 }
 
 </script>
@@ -158,6 +180,8 @@ export default{
 
     html {
         scroll-behavior: smooth;
+        margin: 0;
+        padding: 0;
     }
 
 </style>
@@ -175,25 +199,25 @@ export default{
         box-sizing: border-box;
         background-color: #333;
         padding: 15px;
-        font-family: 'Arial', sans-serif;
+        font-family: ui-monospace, Menlo, monospace;
         text-align: center;
+
     }
 
     nav a {
         color: white;
         text-decoration: none;
         margin: 0 20px;
+         transition: transform 0.3s ease;
+         cursor: pointer;
     }
 
     nav a:hover {
         color: #ddd;
+        transform: scale(1.1) translateY(-3px);
     }
 
     a {
-        color:white;
-    }
-
-    .links {
         color:white;
     }
 
@@ -217,36 +241,13 @@ export default{
         font-size: 18px;
         padding: 0 20px;
         color: white;
-        font-family: 'Arial', sans-serif;
-        text-align: left;
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
+        font-family: ui-monospace, Menlo, monospace;
     }
 
-    h1, h2 {
+    h1, h2, h3 {
         color: white;
-        font-family: 'Arial', sans-serif;
+        font-family: ui-monospace, Menlo, monospace;
         text-align: center;  
-    }
-
-    h3 {
-        text-align:center;
-        color:white;
-        font-family: 'Arial', sans-serif;
-    }
-
-    #contact h3 {
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 0 20px;
-    }
-
-    #contact h3 li {
-        display: block;
-        text-align: left;
-        margin: 0;
     }
 
 
@@ -255,8 +256,7 @@ export default{
     }
     
     .headshot-wrapper {
-        margin-bottom:15rem;
-
+        margin-bottom: 120px;
     }
 
     .section-wrapper {
@@ -268,7 +268,6 @@ export default{
     .section-wrapper, .project-wrapper {
         overflow:hidden;
     }
-
 
     .section, .project {
         opacity: 0;
@@ -299,24 +298,23 @@ export default{
         margin-bottom: 0; 
     }
 
-    .scroll-row {
-        display: flex;
-        overflow-x: auto;
-        gap: 20px;
-        padding: 20px;
-        justify-content: flex-start;
-    }
-
     .scroll-row-img {
         border-radius: 10px;
     }
 
-    .scroll-row li {
-        flex-shrink: 0;
-        margin: 0; 
+    .screenshot {
+        width: 100%;
+        height: auto;
+        border-radius:10px;
     }
 
-    .screenshot {
+    #math1 {
+        width: 100%;
+        height: auto;
+        border-radius:10px;
+    }
+    
+    #math2 {
         width: 100%;
         height: auto;
         border-radius:10px;
@@ -334,6 +332,87 @@ export default{
         white-space: nowrap;
     }
 
+    #contact ul {
+        font-family: ui-monospace, Menlo, monospace;
+        color: white;
+    }
+
+    #fairwayd-gallery,
+    #math-gallery,
+    #ray-gallery {
+        margin-top: 24px;
+    }
+
+    #fairwayd-gallery {
+        position: relative;
+        z-index: 5;
+        width: 250px;
+        height: 520px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .project-wrapper:has(#fairwayd-gallery, #math-gallery, #ray-gallery) {
+        overflow: visible;
+    }
+
+    #fairwayd-gallery img {
+        position: absolute;
+        top: 50px;
+        width: 250px;
+        height: 500px;
+        display: block;
+        border-radius: 10px;
+        transition: all .3s ease-in-out;
+    }
+
+    #math-gallery {
+        position: relative;
+        z-index: 5;
+        width: 500px;
+        height: 320px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #math-gallery img {
+        position: absolute;
+        top: 50px;
+        width: 500px;
+        height: 312px;
+        display: block;
+        border-radius: 8px;
+        transition: all .3s ease-in-out;
+    }
+
+    #ray-gallery {
+        position: relative;
+        z-index: 5;
+        top: 50px;
+        width: 500px;
+        height: 360px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #fairwayd-gallery .photo1 { transform: rotate(-6deg) translate(-5px, 2px); }
+    #fairwayd-gallery .photo2 { transform: rotate(-2deg); }
+    #fairwayd-gallery .photo3 { transform: rotate(2deg) translate(5px, 2px); }
+    #fairwayd-gallery .photo4 { transform: rotate(6deg) translate(10px, 4px); }
+
+    #fairwayd-gallery:hover .photo1 { transform: rotate(-12deg) translate(-150px, 0); }
+    #fairwayd-gallery:hover .photo2 { transform: rotate(-4deg) translate(-50px, -10px); }
+    #fairwayd-gallery:hover .photo3 { transform: rotate(4deg) translate(50px, -10px); }
+    #fairwayd-gallery:hover .photo4 { transform: rotate(12deg) translate(150px, 0); }
+
+    #math-gallery .math1 { transform: rotate(-4deg) translate(-5px, 2px); }
+    #math-gallery .math2 { transform: rotate(3deg) translate(5px, -2px); }
+
+    #math-gallery:hover .math1 { transform: rotate(-8deg) translate(-180px, 0); }
+    #math-gallery:hover .math2 { transform: rotate(8deg) translate(180px, 0); }
 
     @media (max-width: 768px) {
 
@@ -346,16 +425,18 @@ export default{
         display:flex;
         white-space: nonwrap;
         justify-content: center;
+        text-align: center;
         gap:10px;
     }
 
     .headshot-wrapper {
-        margin-bottom: 5rem;
+        margin-bottom: 120px;
     }
 
      #languages-and-tools ul {
         display: flex;
         overflow-x: auto;
+        justify-content: center;
         gap: 15px;
     }
 
@@ -367,20 +448,30 @@ export default{
         margin-bottom: 100px;
     }
 
-    .scroll-row {
-        justify-content: flex-start;
-    }
-
-    .scroll-row img {
-        width: 200px;
-        height: 400px;
-    }
 
      #contact li {
         display: block;
         margin: 10px;
     }
 
+    #contact ul {
+        display:flex;
+        justify-content: center;
+        list-style: none;
+        font-family: ui-monospace, Menlo, monospace;
+        color: white;
+    }
+
+    #contact ul li {
+         transition: transform 0.3s ease;
+         cursor: pointer;
+    }
+
+    #contact ul li:hover {
+        transform: scale(1.1);
+        transform: translateY(-10px);
+    }
+ 
     .section,
     .project {
         transform: scale(0.95);
@@ -392,6 +483,7 @@ export default{
         transform: scale(1);
     }
 
+  
    
 }
 
