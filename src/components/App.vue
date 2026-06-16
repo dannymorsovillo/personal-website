@@ -12,11 +12,13 @@
         <div class="section">
         <div class="header">
         <h1>
-            <span ref="typedElement" class="typed"></span>
+            <span ref="typed1" class="typed"></span>
         </h1>
         <div class = "headshot-wrapper">
             <img src="/headshot.png" class="headshot" width="200" height= "200">
-             <p style="text-align: center;">software engineer intern on the state farm mobile app team.</p>
+             <p style="text-align: center;">
+                 <span ref="typed2" class="typed"></span>
+             </p>
         </div>
         <div class = "bio">
             <h2>{{second_title}}</h2>
@@ -100,12 +102,12 @@
     <section class="section-wrapper" id="contact">
         <div class="section">
         <ul>
-           <li><a :href="phone" target="_blank" class="bottom-links">
+           <li><a href="mailto:danielmorsovillo31@gmail.com" target="_blank" class="bottom-links">
                 <img src="/email.svg" alt="Click me" width="50" height="50">
                 </a>
            </li>
            <li>
-            <a :href="phone" target="_blank" class="bottom-links">
+            <a href="tel:+17082707899" target="_blank" class="bottom-links">
                 <img src="/phone.svg" alt="Click me" width="50" height="50">
                 </a>
            </li>
@@ -129,18 +131,26 @@ export default{
             fourth_title: "projects",
             github: "https://github.com/dannymorsovillo",
             linkedin: "https://www.linkedin.com/in/danielmorsovillo",
-            phone: "708-270-7899",
-            email: "danielmorsovillo31@gmail.com"
         }
     },
 
     mounted() {
-        const el = this.$refs.typedElement;
-        this.typedInstance = new Typed(el, {
+        const t1 = this.$refs.typed1;
+        const t2 = this.$refs.typed2;
+        this.typed1 = new Typed(t1, {
             strings: ["hello", "i'm danny", "welcome to", "my portfolio website" ],
-            typedSpeed:0,
-            backSpeed:0,
-        });
+            typedSpeed:10,
+            backSpeed:10,
+            onComplete: () => {
+
+            this.typed2 = new Typed(t2, {
+                strings: ["this website is to", "showcase projects", "and get to know me", "just a little", "i'm currently", "a software engineer intern", "at state farm", "on the", "mobile app team" ],
+                typedSpeed:10,
+                backSpeed:10,
+             });
+         }
+    });
+
 
         const wrappers = document.querySelectorAll('.section-wrapper, .project-wrapper');
         const observer = new IntersectionObserver(
@@ -161,10 +171,29 @@ export default{
         wrappers.forEach(wrapper => {
             observer.observe(wrapper);
         });
+
+        const galleries = document.querySelectorAll('#fairwayd-gallery, #math-gallery');
+        galleries.forEach(gallery => {
+            gallery.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const wasActive = gallery.classList.contains('is-active');
+                galleries.forEach(g => g.classList.remove('is-active'));
+                if (!wasActive) {
+                    gallery.classList.add('is-active');
+                }
+            });
+        });
+        document.addEventListener('click', () => {
+            galleries.forEach(g => g.classList.remove('is-active'));
+        });
     },
     beforeUnmount() {
-        if (this.typedInstance) {
-            this.typedInstance.destroy();
+        if (this.typed1) {
+            this.typed1.destroy();
+        }
+
+        if (this.typed2) {
+            this.typed2.destroy();
         }
     }
 }
@@ -193,9 +222,9 @@ export default{
 
     nav {
         position:fixed;
-        top:0;
+        top: 0;
         z-index: 100;
-        width:100%;
+        width: 100%;
         box-sizing: border-box;
         background-color: #333;
         padding: 15px;
@@ -205,16 +234,18 @@ export default{
     }
 
     nav a {
+        display: inline-block;
         color: white;
         text-decoration: none;
         margin: 0 20px;
-         transition: transform 0.3s ease;
-         cursor: pointer;
+        transition: transform 0.3s ease;
+        cursor: pointer;
+        white-space: nowrap;
     }
 
     nav a:hover {
         color: #ddd;
-        transform: scale(1.1) translateY(-3px);
+        transform: scale(1.1) translateY(-5px);
     }
 
     a {
@@ -351,6 +382,8 @@ export default{
         display: block;
         margin-left: auto;
         margin-right: auto;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
     }
 
     .project-wrapper:has(#fairwayd-gallery, #math-gallery, #ray-gallery) {
@@ -375,6 +408,8 @@ export default{
         display: block;
         margin-left: auto;
         margin-right: auto;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
     }
 
     #math-gallery img {
@@ -403,16 +438,16 @@ export default{
     #fairwayd-gallery .photo3 { transform: rotate(2deg) translate(5px, 2px); }
     #fairwayd-gallery .photo4 { transform: rotate(6deg) translate(10px, 4px); }
 
-    #fairwayd-gallery:hover .photo1 { transform: rotate(-12deg) translate(-150px, 0); }
-    #fairwayd-gallery:hover .photo2 { transform: rotate(-4deg) translate(-50px, -10px); }
-    #fairwayd-gallery:hover .photo3 { transform: rotate(4deg) translate(50px, -10px); }
-    #fairwayd-gallery:hover .photo4 { transform: rotate(12deg) translate(150px, 0); }
+    #fairwayd-gallery:hover .photo1, #fairwayd-gallery.is-active .photo1 { transform: rotate(-12deg) translate(-150px, 0); }
+    #fairwayd-gallery:hover .photo2, #fairwayd-gallery.is-active .photo2 { transform: rotate(-4deg) translate(-50px, -10px); }
+    #fairwayd-gallery:hover .photo3, #fairwayd-gallery.is-active .photo3 { transform: rotate(4deg) translate(50px, -10px); }
+    #fairwayd-gallery:hover .photo4, #fairwayd-gallery.is-active .photo4 { transform: rotate(12deg) translate(150px, 0); }
 
     #math-gallery .math1 { transform: rotate(-4deg) translate(-5px, 2px); }
     #math-gallery .math2 { transform: rotate(3deg) translate(5px, -2px); }
 
-    #math-gallery:hover .math1 { transform: rotate(-8deg) translate(-180px, 0); }
-    #math-gallery:hover .math2 { transform: rotate(8deg) translate(180px, 0); }
+    #math-gallery:hover .math1, #math-gallery.is-active .math1 { transform: rotate(-8deg) translate(-180px, 0); }
+    #math-gallery:hover .math2, #math-gallery.is-active .math2 { transform: rotate(8deg) translate(180px, 0); }
 
     @media (max-width: 768px) {
 
@@ -483,8 +518,40 @@ export default{
         transform: scale(1);
     }
 
-  
-   
+    #fairwayd-gallery {
+        width: 160px;
+        height: 340px;
+    }
+
+    #fairwayd-gallery img {
+        width: 160px;
+        height: 320px;
+        top: 20px;
+    }
+
+    #fairwayd-gallery:hover .photo1, #fairwayd-gallery.is-active .photo1 { transform: rotate(-12deg) translate(-65px, 0); }
+    #fairwayd-gallery:hover .photo2, #fairwayd-gallery.is-active .photo2 { transform: rotate(-4deg) translate(-25px, -8px); }
+    #fairwayd-gallery:hover .photo3, #fairwayd-gallery.is-active .photo3 { transform: rotate(4deg) translate(25px, -8px); }
+    #fairwayd-gallery:hover .photo4, #fairwayd-gallery.is-active .photo4 { transform: rotate(12deg) translate(65px, 0); }
+
+    #math-gallery {
+        width: 220px;
+        height: 140px;
+    }
+
+    #math-gallery img {
+        width: 220px;
+        height: 138px;
+        top: 20px;
+    }
+
+    #ray-gallery {
+        width: 220px;
+        height: 140px;
+    }
+
+    #math-gallery:hover .math1, #math-gallery.is-active .math1 { transform: rotate(-8deg) translate(-55px, 0); }
+    #math-gallery:hover .math2, #math-gallery.is-active .math2 { transform: rotate(8deg) translate(55px, 0); }
 }
 
 
