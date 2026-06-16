@@ -230,7 +230,7 @@ export default{
         font-family: ui-monospace, Menlo, monospace;
         justify-content: center;
         display:flex;
-        font-size: 12px;
+        font-size: 10px;
     }
 
     nav a {
