@@ -230,6 +230,7 @@ export default{
         font-family: ui-monospace, Menlo, monospace;
         justify-content: center;
         display:flex;
+        font-size: 12px;
     }
 
     nav a {
@@ -469,9 +470,6 @@ export default{
     @media (max-width: 768px) {
     
 
-    nav {
-
-    }
 
     .headshot-wrapper {
         margin-bottom: 120px;
