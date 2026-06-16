@@ -237,7 +237,7 @@ export default{
         display: inline-block;
         color: white;
         text-decoration: none;
-        margin: 0 20px;
+        margin: 0 10px;
         transition: transform 0.3s ease;
         cursor: pointer;
         white-space: nowrap;
@@ -270,7 +270,7 @@ export default{
     }
 
     p {
-        font-size: 18px;
+        font-size: 16px;
         padding: 0 20px;
         color: white;
         font-family: ui-monospace, Menlo, monospace;
