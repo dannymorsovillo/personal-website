@@ -2,10 +2,10 @@
 <template>
    <div>
         <nav>
-            <a href="#about">about me</a>
-            <a href="#languages-and-tools">languages and tools</a>
-            <a href="#projects">projects</a>
-            <a href="#contact">contact me</a>
+            <a href="#about"><span>about me</span></a>
+            <a href="#languages-and-tools"><span>languages and tools</span></a>
+            <a href="#projects"><span>projects</span></a>
+            <a href="#contact"><span>contact me</span></a>
         </nav>
 
         <section class="section-wrapper" id="about">
@@ -42,7 +42,6 @@
         </div>
         </div>
         </section>
-
 
 
         <section class="section-wrapper" id="languages-and-tools">
@@ -153,23 +152,26 @@ export default{
 
 
         const wrappers = document.querySelectorAll('.section-wrapper, .project-wrapper');
-        const observer = new IntersectionObserver(
+        this.observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach(entry => {
                     const inner = entry.target.querySelector('.section, .project');
+                    if (!inner) return;
+
                     if (entry.isIntersecting) {
                         inner.classList.add('visible');
                     } else {
-                        if (entry.boundingClientRect.top > 0) {
-                            inner.classList.remove('visible');
-                        }
+                        // park the element on whichever edge it left through, so it
+                        // animates back in from that direction on the way back
+                        inner.classList.remove('visible');
+                        inner.classList.toggle('from-above', entry.boundingClientRect.top < 0);
                     }
                 });
             },
             { threshold: 0 }
         );
         wrappers.forEach(wrapper => {
-            observer.observe(wrapper);
+            this.observer.observe(wrapper);
         });
 
         const galleries = document.querySelectorAll('#fairwayd-gallery, #math-gallery');
@@ -195,239 +197,253 @@ export default{
         if (this.typed2) {
             this.typed2.destroy();
         }
+
+        if (this.observer) {
+            this.observer.disconnect();
+        }
     }
 }
 
 </script>
 
+<!-- ==========================================================================
+     Global styles (unscoped)
+     ========================================================================== -->
 <style>
-    html, body {
-        background: linear-gradient(to bottom, black, grey);
-        background-attachment: fixed;       
+    :root {
+        --font-mono: ui-monospace, Menlo, monospace;
+        --color-text: #fff;
+        --color-nav: #333;
+        --radius: 10px;
+
+        /* scroll reveal */
+        --reveal-distance: 100px;
+        --reveal-scale: 1;
+        --reveal-duration: 0.7s;
+
+        /* hover lift shared by nav links, socials and contact icons */
+        --lift-duration: 0.2s;
+    }
+
+    html,
+    body {
         margin: 0;
         padding: 0;
         height: 100%;
+        background: linear-gradient(to bottom, black, grey);
+        background-attachment: fixed;
         overscroll-behavior: none;
     }
-
-
-
 </style>
 
-<style scoped >
-    .header{
-        text-align:center;
+<!-- ==========================================================================
+     Component styles (scoped)
+     ========================================================================== -->
+<style scoped>
+    /* ----------------------------------------------------------------------
+       1. Base typography
+       ---------------------------------------------------------------------- */
+    h1,
+    h2,
+    h3 {
+        color: var(--color-text);
+        font-family: var(--font-mono);
+        text-align: center;
     }
 
+    p {
+        padding: 0 20px;
+        color: var(--color-text);
+        font-family: var(--font-mono);
+        font-size: 16px;
+    }
+
+    a {
+        color: var(--color-text);
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        text-align: center;
+    }
+
+    li {
+        display: inline-block;
+        position: relative;
+        margin: 0 15px;
+        text-align: center;
+    }
+
+    /* ----------------------------------------------------------------------
+       2. Navigation
+       ---------------------------------------------------------------------- */
     nav {
-        position:fixed;
+        position: fixed;
         top: 0;
         z-index: 100;
+        display: flex;
+        justify-content: center;
         width: 100%;
         box-sizing: border-box;
-        background-color: #333;
-        padding: 15px;
-        font-family: ui-monospace, Menlo, monospace;
-        justify-content: center;
-        display:flex;
+        /* vertical padding lives on the links so their hit area fills the bar */
+        padding: 0 15px;
+        background-color: var(--color-nav);
+        font-family: var(--font-mono);
         font-size: 10px;
     }
 
+    /* The link itself never moves — its box is the hover target, and it fills the
+       full height of the bar so the cursor stays inside it. Only the inner span
+       animates, which stops the lift from sliding out from under the pointer and
+       retriggering hover over and over. */
     nav a {
-        display: inline-block;
-        color: white;
+        display: flex;
+        align-items: center;
+        padding: 15px 10px;
+        color: var(--color-text);
         text-decoration: none;
-        margin: 0 10px;
-        transition: transform 0.3s ease;
-        cursor: pointer;
         white-space: nowrap;
+        cursor: pointer;
+        transition: color var(--lift-duration) ease;
+    }
+
+    nav a span {
+        display: inline-block;
+        transition: transform var(--lift-duration) ease-out;
     }
 
     nav a:hover {
         color: #ddd;
-        transform: scale(1.1) translateY(-5px);
     }
 
-
-    a {
-        color:white;
+    nav a:hover span {
+        transform: scale(1.1) translateY(-4px);
     }
 
-    ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
+    /* ----------------------------------------------------------------------
+       3. Section layout
+       ---------------------------------------------------------------------- */
+    .section-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 60px 20px;
+    }
+
+    .section-wrapper,
+    .project-wrapper {
+        overflow: hidden;
+    }
+
+    /* galleries fan out past their wrapper, so they must not be clipped */
+    .project-wrapper:has(#fairwayd-gallery, #math-gallery, #ray-gallery) {
+        overflow: visible;
+    }
+
+    /* ----------------------------------------------------------------------
+       4. Scroll reveal
+       Hidden state sits on whichever viewport edge the element left through
+       (`.from-above` is set by the IntersectionObserver), so content animates
+       back in from the correct direction whether scrolling down or up.
+       ---------------------------------------------------------------------- */
+    .section,
+    .project {
+        opacity: 0;
+        transform: translateY(var(--reveal-distance)) scale(var(--reveal-scale));
+        transition: opacity var(--reveal-duration) ease,
+                    transform var(--reveal-duration) ease;
+    }
+
+    .section.from-above,
+    .project.from-above {
+        transform: translateY(calc(-1 * var(--reveal-distance))) scale(var(--reveal-scale));
+    }
+
+    .section.visible,
+    .project.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    /* ----------------------------------------------------------------------
+       5. About — headshot, bio, socials
+       ---------------------------------------------------------------------- */
+    .header {
         text-align: center;
-    }   
-
-  
-    li{
-        display: inline-block;
-        position: relative;
-        text-align:center;
-        margin-right: 15px;
-        margin-left: 15px;
     }
-
-    p {
-        font-size: 16px;
-        padding: 0 20px;
-        color: white;
-        font-family: ui-monospace, Menlo, monospace;
-    }
-
-    h1, h2, h3 {
-        color: white;
-        font-family: ui-monospace, Menlo, monospace;
-        text-align: center;  
-    }
-
 
     .headshot {
-      border-radius: 50%;
+        border-radius: 50%;
     }
-    
+
     .headshot-wrapper {
         margin-bottom: 120px;
     }
 
-    .section-wrapper {
-        padding: 60px 20px;
-        max-width: 900px;
-        margin: 0 auto;
+    .download-text {
+        display: block;
+        position: absolute;
+        top: 55px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--color-text);
+        font-family: 'Arial', sans-serif;
+        font-size: 14px;
+        white-space: nowrap;
     }
 
-    .section-wrapper, .project-wrapper {
-        overflow:hidden;
-    }
-
-    .section, .project {
-        opacity: 0;
-        transform: translateY(100px);
-        transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-
-    .section.visible, .project.visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-
+    /* ----------------------------------------------------------------------
+       6. Projects
+       ---------------------------------------------------------------------- */
     #projects .section > ul {
         text-align: left;
     }
 
     #projects .section > ul > li {
         display: block;
+        margin: 0 0 250px;
         text-align: center;
-        margin: 0;
-        margin-bottom: 250px;
-
     }
 
     #projects .section > ul > li:last-child {
-        margin-bottom: 0; 
+        margin-bottom: 0;
     }
 
-    .scroll-row-img {
-        border-radius: 10px;
-    }
-
-    .screenshot {
-        width: 100%;
-        height: auto;
-        border-radius:10px;
-    }
-
-    #math1 {
-        width: 100%;
-        height: auto;
-        border-radius:10px;
-    }
-    
-    #math2 {
-        width: 100%;
-        height: auto;
-        border-radius:10px;
-    }
-
-    .download-text {
-        display: block;
-        color: white;
-        font-size: 14px;
-        font-family: 'Arial', sans-serif;
-        position: absolute;
-        top: 55px;
-        left: 50%;
-        transform: translateX(-50%);
-        white-space: nowrap;
-    }
-
-
+    /* --- galleries: shared ------------------------------------------------ */
     #fairwayd-gallery,
     #math-gallery,
     #ray-gallery {
-        margin-top: 24px;
-    }
-
-    #fairwayd-gallery {
+        display: block;
         position: relative;
         z-index: 5;
-        width: 250px;
-        height: 520px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
+        margin: 24px auto 0;
+    }
+
+    #fairwayd-gallery,
+    #math-gallery {
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
     }
 
-    .project-wrapper:has(#fairwayd-gallery, #math-gallery, #ray-gallery) {
-        overflow: visible;
+    #fairwayd-gallery img,
+    #math-gallery img {
+        display: block;
+        position: absolute;
+        top: 50px;
+        border-radius: var(--radius);
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* --- fairwayd --------------------------------------------------------- */
+    #fairwayd-gallery {
+        width: 250px;
+        height: 520px;
     }
 
     #fairwayd-gallery img {
-        position: absolute;
-        top: 50px;
         width: 250px;
         height: 500px;
-        display: block;
-        border-radius: 10px;
-        transition: all .3s ease-in-out;
-    }
-
-    #math-gallery {
-        position: relative;
-        z-index: 5;
-        width: 500px;
-        height: 320px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    #math-gallery img {
-        position: absolute;
-        top: 50px;
-        width: 500px;
-        height: 312px;
-        display: block;
-        border-radius: 8px;
-        transition: all .3s ease-in-out;
-    }
-
-    #ray-gallery {
-        position: relative;
-        z-index: 5;
-        top: 50px;
-        width: 500px;
-        height: 360px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
     }
 
     #fairwayd-gallery .photo1 { transform: rotate(-6deg) translate(-5px, 2px); }
@@ -435,129 +451,132 @@ export default{
     #fairwayd-gallery .photo3 { transform: rotate(2deg) translate(5px, 2px); }
     #fairwayd-gallery .photo4 { transform: rotate(6deg) translate(10px, 4px); }
 
-    #fairwayd-gallery:hover .photo1, #fairwayd-gallery.is-active .photo1 { transform: rotate(-12deg) translate(-150px, 0); }
-    #fairwayd-gallery:hover .photo2, #fairwayd-gallery.is-active .photo2 { transform: rotate(-4deg) translate(-50px, -10px); }
-    #fairwayd-gallery:hover .photo3, #fairwayd-gallery.is-active .photo3 { transform: rotate(4deg) translate(50px, -10px); }
-    #fairwayd-gallery:hover .photo4, #fairwayd-gallery.is-active .photo4 { transform: rotate(12deg) translate(150px, 0); }
+    #fairwayd-gallery:hover .photo1,
+    #fairwayd-gallery.is-active .photo1 { transform: rotate(-12deg) translate(-150px, 0); }
+    #fairwayd-gallery:hover .photo2,
+    #fairwayd-gallery.is-active .photo2 { transform: rotate(-4deg) translate(-50px, -10px); }
+    #fairwayd-gallery:hover .photo3,
+    #fairwayd-gallery.is-active .photo3 { transform: rotate(4deg) translate(50px, -10px); }
+    #fairwayd-gallery:hover .photo4,
+    #fairwayd-gallery.is-active .photo4 { transform: rotate(12deg) translate(150px, 0); }
+
+    /* --- make math count -------------------------------------------------- */
+    #math-gallery {
+        width: 500px;
+        height: 320px;
+    }
+
+    #math-gallery img {
+        width: 500px;
+        height: 312px;
+        border-radius: 8px;
+    }
 
     #math-gallery .math1 { transform: rotate(-4deg) translate(-5px, 2px); }
     #math-gallery .math2 { transform: rotate(3deg) translate(5px, -2px); }
 
-    #math-gallery:hover .math1, #math-gallery.is-active .math1 { transform: rotate(-8deg) translate(-180px, 0); }
-    #math-gallery:hover .math2, #math-gallery.is-active .math2 { transform: rotate(8deg) translate(180px, 0); }
+    #math-gallery:hover .math1,
+    #math-gallery.is-active .math1 { transform: rotate(-8deg) translate(-180px, 0); }
+    #math-gallery:hover .math2,
+    #math-gallery.is-active .math2 { transform: rotate(8deg) translate(180px, 0); }
 
-
-    #contact ul li {
-         transition: transform 0.3s ease;
-         cursor: pointer;
-    }
-
-    #contact ul li:hover {
-        transform: scale(1.1);
-        transform: translateY(-10px);  
-    }
-
-    .bio ul li {
-         transition: transform 0.3s ease;
-         cursor: pointer;
-    }
-
-    .bio ul li:hover {
-        transform: scale(1.1);
-        transform: translateY(-10px);
-    }
-
-    @media (max-width: 768px) {
-    
-
-
-    .headshot-wrapper {
-        margin-bottom: 120px;
-    }
-
-     #languages-and-tools ul {
-        display: flex;
-        overflow-x: auto;
-        justify-content: center;
-        gap: 15px;
-    }
-
-    #languages-and-tools li {
-        flex-shrink: 0;
-    }
-
-    #projects .section > ul > li {
-        margin-bottom: 100px;
-    }
-
-
-     
-
-    #contact ul {
-        display:flex;
-        justify-content: center;
-        list-style: none;
-        font-family: ui-monospace, Menlo, monospace;
-        color: white;
-    }
-
-    #contact ul li {
-         transition: transform 0.3s ease;
-         cursor: pointer;
-    }
-
-    #contact ul li:hover {
-        transform: scale(1.1);
-        transform: translateY(-10px);
-    }
- 
-    .section,
-    .project {
-        transform: scale(0.95);
-        transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .section.visible,
-    .project.visible {
-        transform: scale(1);
-    }
-
-    #fairwayd-gallery {
-        width: 160px;
-        height: 340px;
-    }
-
-    #fairwayd-gallery img {
-        width: 160px;
-        height: 320px;
-        top: 20px;
-    }
-
-    #fairwayd-gallery:hover .photo1, #fairwayd-gallery.is-active .photo1 { transform: rotate(-12deg) translate(-65px, 0); }
-    #fairwayd-gallery:hover .photo2, #fairwayd-gallery.is-active .photo2 { transform: rotate(-4deg) translate(-25px, -8px); }
-    #fairwayd-gallery:hover .photo3, #fairwayd-gallery.is-active .photo3 { transform: rotate(4deg) translate(25px, -8px); }
-    #fairwayd-gallery:hover .photo4, #fairwayd-gallery.is-active .photo4 { transform: rotate(12deg) translate(65px, 0); }
-
-    #math-gallery {
-        width: 220px;
-        height: 140px;
-    }
-
-    #math-gallery img {
-        width: 220px;
-        height: 138px;
-        top: 20px;
-    }
-
+    /* --- raytracer -------------------------------------------------------- */
     #ray-gallery {
-        width: 220px;
-        height: 140px;
+        top: 50px;
+        width: 500px;
+        height: 360px;
     }
 
-    #math-gallery:hover .math1, #math-gallery.is-active .math1 { transform: rotate(-8deg) translate(-55px, 0); }
-    #math-gallery:hover .math2, #math-gallery.is-active .math2 { transform: rotate(8deg) translate(55px, 0); }
-}
+    .screenshot {
+        width: 100%;
+        height: auto;
+        border-radius: var(--radius);
+    }
 
+    /* ----------------------------------------------------------------------
+       7. Hover lift (socials + contact icons)
+       ---------------------------------------------------------------------- */
+    .bio ul li,
+    #contact ul li {
+        cursor: pointer;
+        transition: transform var(--lift-duration) ease;
+    }
 
-        
+    .bio ul li:hover,
+    #contact ul li:hover {
+        transform: translateY(-10px) scale(1.1);
+    }
+
+    /* ----------------------------------------------------------------------
+       8. Responsive
+       ---------------------------------------------------------------------- */
+    @media (max-width: 768px) {
+        /* shorter, gentler reveal on small screens */
+        .section,
+        .project {
+            --reveal-distance: 30px;
+            --reveal-scale: 0.95;
+        }
+
+        #languages-and-tools ul {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            overflow-x: auto;
+        }
+
+        #languages-and-tools li {
+            flex-shrink: 0;
+        }
+
+        #projects .section > ul > li {
+            margin-bottom: 100px;
+        }
+
+        #contact ul {
+            display: flex;
+            justify-content: center;
+        }
+
+        #fairwayd-gallery {
+            width: 160px;
+            height: 340px;
+        }
+
+        #fairwayd-gallery img {
+            top: 20px;
+            width: 160px;
+            height: 320px;
+        }
+
+        #fairwayd-gallery:hover .photo1,
+        #fairwayd-gallery.is-active .photo1 { transform: rotate(-12deg) translate(-65px, 0); }
+        #fairwayd-gallery:hover .photo2,
+        #fairwayd-gallery.is-active .photo2 { transform: rotate(-4deg) translate(-25px, -8px); }
+        #fairwayd-gallery:hover .photo3,
+        #fairwayd-gallery.is-active .photo3 { transform: rotate(4deg) translate(25px, -8px); }
+        #fairwayd-gallery:hover .photo4,
+        #fairwayd-gallery.is-active .photo4 { transform: rotate(12deg) translate(65px, 0); }
+
+        #math-gallery {
+            width: 220px;
+            height: 140px;
+        }
+
+        #math-gallery img {
+            top: 20px;
+            width: 220px;
+            height: 138px;
+        }
+
+        #math-gallery:hover .math1,
+        #math-gallery.is-active .math1 { transform: rotate(-8deg) translate(-55px, 0); }
+        #math-gallery:hover .math2,
+        #math-gallery.is-active .math2 { transform: rotate(8deg) translate(55px, 0); }
+
+        #ray-gallery {
+            width: 220px;
+            height: 140px;
+        }
+    }
 </style>
