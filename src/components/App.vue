@@ -67,11 +67,49 @@
                 <div class="project">
                 <h2>fairwayd iOS App</h2>
                 <p> mobile application that helps golfers find new courses, review courses, and receive AI based recommendations.</p>
-                <div id="fairwayd-gallery">
-                    <img src="/explore.png" alt="explore" width="250" height="500" class="photo1">
-                    <img src="/recommend.png" alt="recommend" width="250" height="500" class="photo2">
-                    <img src="/howitworks.png" alt="howItWorks" width="250" height="500" class="photo3">
-                    <img src="/coursedetail.png" alt="courseDetail" width="250" height="500" class="photo4">
+                <div class="carousel portrait">
+                    <button
+                        class="carousel-arrow prev"
+                        type="button"
+                        aria-label="previous image"
+                        @click="prev('fairwayd')"
+                    >&#8249;</button>
+                    <div
+                        class="carousel-viewport"
+                        @pointerdown="onSwipeStart"
+                        @pointerup="onSwipeEnd($event, 'fairwayd')"
+                        @pointercancel="swipeStartX = null"
+                    >
+                        <div
+                            class="carousel-track"
+                            :style="{ transform: `translateX(-${galleries.fairwayd.index * 100}%)` }"
+                        >
+                            <img
+                                v-for="(img, i) in galleries.fairwayd.images"
+                                :key="i"
+                                :src="img.src"
+                                :alt="img.alt"
+                                class="carousel-slide"
+                            >
+                        </div>
+                    </div>
+                    <button
+                        class="carousel-arrow next"
+                        type="button"
+                        aria-label="next image"
+                        @click="next('fairwayd')"
+                    >&#8250;</button>
+                    <div class="carousel-dots">
+                        <button
+                            v-for="(_, i) in galleries.fairwayd.images"
+                            :key="i"
+                            type="button"
+                            class="carousel-dot"
+                            :class="{ active: galleries.fairwayd.index === i }"
+                            :aria-label="`show image ${i + 1}`"
+                            @click="select('fairwayd', i)"
+                        ></button>
+                    </div>
                 </div>
             </div>
             </li>
@@ -79,10 +117,50 @@
                 <div class="project">
                 <h2><a href="https://makemathcounttoday.com/">make math count </a></h2>
                 <p>a website for a math workshop sequence that provides educators with a streamlined process to guide their students to success.</p>
-                <div id="math-gallery">
-                    <img src="/makemathcount.png" alt="makemathcount" class="math1">
-                    <img src="/makemathcountabout.png" alt="makemathcount" class="math2">
+                <div class="carousel landscape">
+                    <button
+                        class="carousel-arrow prev"
+                        type="button"
+                        aria-label="previous image"
+                        @click="prev('math')"
+                    >&#8249;</button>
+                    <div
+                        class="carousel-viewport"
+                        @pointerdown="onSwipeStart"
+                        @pointerup="onSwipeEnd($event, 'math')"
+                        @pointercancel="swipeStartX = null"
+                    >
+                        <div
+                            class="carousel-track"
+                            :style="{ transform: `translateX(-${galleries.math.index * 100}%)` }"
+                        >
+                            <img
+                                v-for="(img, i) in galleries.math.images"
+                                :key="i"
+                                :src="img.src"
+                                :alt="img.alt"
+                                class="carousel-slide"
+                            >
+                        </div>
                     </div>
+                    <button
+                        class="carousel-arrow next"
+                        type="button"
+                        aria-label="next image"
+                        @click="next('math')"
+                    >&#8250;</button>
+                    <div class="carousel-dots">
+                        <button
+                            v-for="(_, i) in galleries.math.images"
+                            :key="i"
+                            type="button"
+                            class="carousel-dot"
+                            :class="{ active: galleries.math.index === i }"
+                            :aria-label="`show image ${i + 1}`"
+                            @click="select('math', i)"
+                        ></button>
+                    </div>
+                </div>
             </div>
         </li>
         <li class="project-wrapper">
@@ -130,7 +208,62 @@ export default{
             fourth_title: "projects",
             github: "https://github.com/dannymorsovillo",
             linkedin: "https://www.linkedin.com/in/danielmorsovillo",
+
+            // selectable image carousels — index is the currently shown slide
+            galleries: {
+                fairwayd: {
+                    index: 0,
+                    images: [
+                        { src: "/explore.png", alt: "explore" },
+                        { src: "/recommend.png", alt: "recommend" },
+                        { src: "/howitworks.png", alt: "how it works" },
+                        { src: "/coursedetail.png", alt: "course detail" },
+                    ],
+                },
+                math: {
+                    index: 0,
+                    images: [
+                        { src: "/makemathcount.png", alt: "make math count home" },
+                        { src: "/makemathcountabout.png", alt: "make math count about" },
+                    ],
+                },
+            },
+
+            // where a swipe/drag gesture started (px on the x axis)
+            swipeStartX: null,
         }
+    },
+
+    methods: {
+        // wrap around so the carousel loops in both directions
+        select(key, i) {
+            this.galleries[key].index = i;
+        },
+        next(key) {
+            const g = this.galleries[key];
+            g.index = (g.index + 1) % g.images.length;
+        },
+        prev(key) {
+            const g = this.galleries[key];
+            g.index = (g.index - 1 + g.images.length) % g.images.length;
+        },
+
+        // swipe / click-drag: record the start, then on release advance or go
+        // back if the horizontal travel passed the threshold
+        onSwipeStart(event) {
+            this.swipeStartX = event.clientX;
+            // capture so we still get pointerup even if the mouse is released
+            // outside the image after a fast drag
+            event.currentTarget.setPointerCapture(event.pointerId);
+        },
+        onSwipeEnd(event, key) {
+            if (this.swipeStartX === null) return;
+            const dx = event.clientX - this.swipeStartX;
+            this.swipeStartX = null;
+            const threshold = 40; // ignore small/accidental drags
+            if (dx <= -threshold) this.next(key);
+            else if (dx >= threshold) this.prev(key);
+        },
     },
 
     mounted() {
@@ -172,21 +305,6 @@ export default{
         );
         wrappers.forEach(wrapper => {
             this.observer.observe(wrapper);
-        });
-
-        const galleries = document.querySelectorAll('#fairwayd-gallery, #math-gallery');
-        galleries.forEach(gallery => {
-            gallery.addEventListener('click', (event) => {
-                event.stopPropagation();
-                const wasActive = gallery.classList.contains('is-active');
-                galleries.forEach(g => g.classList.remove('is-active'));
-                if (!wasActive) {
-                    gallery.classList.add('is-active');
-                }
-            });
-        });
-        document.addEventListener('click', () => {
-            galleries.forEach(g => g.classList.remove('is-active'));
         });
     },
     beforeUnmount() {
@@ -336,11 +454,6 @@ export default{
         overflow: hidden;
     }
 
-    /* galleries fan out past their wrapper, so they must not be clipped */
-    .project-wrapper:has(#fairwayd-gallery, #math-gallery, #ray-gallery) {
-        overflow: visible;
-    }
-
     /* ----------------------------------------------------------------------
        4. Scroll reveal
        Hidden state sits on whichever viewport edge the element left through
@@ -410,81 +523,113 @@ export default{
         margin-bottom: 0;
     }
 
-    /* --- galleries: shared ------------------------------------------------ */
-    #fairwayd-gallery,
-    #math-gallery,
-    #ray-gallery {
-        display: block;
-        position: relative;
+    /* --- carousels (fairwayd + make math count) --------------------------- */
+    /* row layout: [ prev ] [ image ] [ next ], with the dots wrapping to their
+       own line below. The arrows are real flex items beside the image, not
+       overlaid on top of it. */
+    .carousel {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
         z-index: 5;
+        /* bottom padding keeps the dots off the wrapper's clip edge so the
+           active (scaled-up) dot isn't shaved along the bottom */
         margin: 24px auto 0;
-    }
-
-    #fairwayd-gallery,
-    #math-gallery {
-        cursor: pointer;
+        padding-bottom: 10px;
         -webkit-tap-highlight-color: transparent;
     }
 
-    #fairwayd-gallery img,
-    #math-gallery img {
-        display: block;
-        position: absolute;
-        top: 50px;
+    /* the viewport is what carries the image width; the carousel itself grows
+       to fit the arrows on either side */
+    .carousel.portrait  .carousel-viewport { width: 250px; }
+    .carousel.landscape .carousel-viewport { width: 500px; }
+
+    /* viewport clips to one slide; the track slides horizontally */
+    .carousel-viewport {
+        flex: 0 0 auto;
+        overflow: hidden;
         border-radius: var(--radius);
-        transition: all 0.3s ease-in-out;
+        /* allow vertical page scrolling but let us handle horizontal swipes */
+        touch-action: pan-y;
+        cursor: grab;
     }
 
-    /* --- fairwayd --------------------------------------------------------- */
-    #fairwayd-gallery {
-        width: 250px;
-        height: 520px;
+    .carousel-viewport:active {
+        cursor: grabbing;
     }
 
-    #fairwayd-gallery img {
-        width: 250px;
-        height: 500px;
+    .carousel-track {
+        display: flex;
+        transition: transform 0.4s ease-in-out;
     }
 
-    #fairwayd-gallery .photo1 { transform: rotate(-6deg) translate(-5px, 2px); }
-    #fairwayd-gallery .photo2 { transform: rotate(-2deg); }
-    #fairwayd-gallery .photo3 { transform: rotate(2deg) translate(5px, 2px); }
-    #fairwayd-gallery .photo4 { transform: rotate(6deg) translate(10px, 4px); }
-
-    #fairwayd-gallery:hover .photo1,
-    #fairwayd-gallery.is-active .photo1 { transform: rotate(-12deg) translate(-150px, 0); }
-    #fairwayd-gallery:hover .photo2,
-    #fairwayd-gallery.is-active .photo2 { transform: rotate(-4deg) translate(-50px, -10px); }
-    #fairwayd-gallery:hover .photo3,
-    #fairwayd-gallery.is-active .photo3 { transform: rotate(4deg) translate(50px, -10px); }
-    #fairwayd-gallery:hover .photo4,
-    #fairwayd-gallery.is-active .photo4 { transform: rotate(12deg) translate(150px, 0); }
-
-    /* --- make math count -------------------------------------------------- */
-    #math-gallery {
-        width: 500px;
-        height: 320px;
+    .carousel-slide {
+        flex: 0 0 100%;
+        width: 100%;
+        height: auto;
+        display: block;
+        /* route the gesture to the viewport and kill the native image drag */
+        pointer-events: none;
+        user-select: none;
     }
 
-    #math-gallery img {
-        width: 500px;
-        height: 312px;
-        border-radius: 8px;
+    /* prev / next arrows sit beside the image */
+    .carousel-arrow {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.5);
+        color: var(--color-text);
+        font-size: 24px;
+        line-height: 1;
+        cursor: pointer;
+        transition: background 0.2s ease;
     }
 
-    #math-gallery .math1 { transform: rotate(-4deg) translate(-5px, 2px); }
-    #math-gallery .math2 { transform: rotate(3deg) translate(5px, -2px); }
+    .carousel-arrow:hover { background: rgba(0, 0, 0, 0.8); }
 
-    #math-gallery:hover .math1,
-    #math-gallery.is-active .math1 { transform: rotate(-8deg) translate(-180px, 0); }
-    #math-gallery:hover .math2,
-    #math-gallery.is-active .math2 { transform: rotate(8deg) translate(180px, 0); }
+    /* dots take the full row width so they wrap under the image + arrows,
+       and are clickable to jump straight to any slide */
+    .carousel-dots {
+        flex: 0 0 100%;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 2px;
+    }
+
+    .carousel-dot {
+        width: 10px;
+        height: 10px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.35);
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .carousel-dot:hover  { background: rgba(255, 255, 255, 0.6); }
+    .carousel-dot.active {
+        background: var(--color-text);
+        transform: scale(1.2);
+    }
 
     /* --- raytracer -------------------------------------------------------- */
     #ray-gallery {
+        position: relative;
+        z-index: 5;
         top: 50px;
         width: 500px;
-        height: 360px;
+        margin: 24px auto 0;
     }
 
     .screenshot {
@@ -538,45 +683,19 @@ export default{
             justify-content: center;
         }
 
-        #fairwayd-gallery {
-            width: 160px;
-            height: 340px;
+        /* carousels shrink to fit narrow screens */
+        .carousel { gap: 8px; }
+        .carousel.portrait  .carousel-viewport { width: 140px; }
+        .carousel.landscape .carousel-viewport { width: 240px; }
+
+        .carousel-arrow {
+            width: 32px;
+            height: 32px;
+            font-size: 20px;
         }
-
-        #fairwayd-gallery img {
-            top: 20px;
-            width: 160px;
-            height: 320px;
-        }
-
-        #fairwayd-gallery:hover .photo1,
-        #fairwayd-gallery.is-active .photo1 { transform: rotate(-12deg) translate(-65px, 0); }
-        #fairwayd-gallery:hover .photo2,
-        #fairwayd-gallery.is-active .photo2 { transform: rotate(-4deg) translate(-25px, -8px); }
-        #fairwayd-gallery:hover .photo3,
-        #fairwayd-gallery.is-active .photo3 { transform: rotate(4deg) translate(25px, -8px); }
-        #fairwayd-gallery:hover .photo4,
-        #fairwayd-gallery.is-active .photo4 { transform: rotate(12deg) translate(65px, 0); }
-
-        #math-gallery {
-            width: 220px;
-            height: 140px;
-        }
-
-        #math-gallery img {
-            top: 20px;
-            width: 220px;
-            height: 138px;
-        }
-
-        #math-gallery:hover .math1,
-        #math-gallery.is-active .math1 { transform: rotate(-8deg) translate(-55px, 0); }
-        #math-gallery:hover .math2,
-        #math-gallery.is-active .math2 { transform: rotate(8deg) translate(55px, 0); }
 
         #ray-gallery {
-            width: 220px;
-            height: 140px;
+            width: 280px;
         }
     }
 </style>
