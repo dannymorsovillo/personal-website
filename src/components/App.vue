@@ -627,9 +627,8 @@ export default{
     #ray-gallery {
         position: relative;
         z-index: 5;
-        top: 50px;
         width: 500px;
-        margin: 24px auto 0;
+        margin: 74px auto 0;
     }
 
     .screenshot {
@@ -685,8 +684,8 @@ export default{
 
         /* carousels shrink to fit narrow screens */
         .carousel { gap: 8px; }
-        .carousel.portrait  .carousel-viewport { width: 140px; }
-        .carousel.landscape .carousel-viewport { width: 240px; }
+        .carousel.portrait  .carousel-viewport { width: 170px; }
+        .carousel.landscape .carousel-viewport { width: 270px; }
 
         .carousel-arrow {
             width: 32px;
@@ -695,7 +694,7 @@ export default{
         }
 
         #ray-gallery {
-            width: 280px;
+            width: 270px;
         }
     }
 </style>
