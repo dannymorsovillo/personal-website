@@ -2,10 +2,10 @@
 <template>
    <div>
         <nav>
-            <a href="#about"><span>about me</span></a>
-            <a href="#languages-and-tools"><span>languages and tools</span></a>
-            <a href="#projects"><span>projects</span></a>
-            <a href="#contact"><span>contact me</span></a>
+            <a href="#about" @click="replayReveal('#about')"><span>about me</span></a>
+            <a href="#languages-and-tools" @click="replayReveal('#languages-and-tools')"><span>languages and tools</span></a>
+            <a href="#projects" @click="replayReveal('#projects')"><span>projects</span></a>
+            <a href="#contact" @click="replayReveal('#contact')"><span>contact me</span></a>
         </nav>
 
         <section class="section-wrapper" id="about">
@@ -256,6 +256,23 @@ export default{
             // outside the image after a fast drag
             event.currentTarget.setPointerCapture(event.pointerId);
         },
+        // nav jumps are instant, so a section already on screen keeps its
+        // `visible` class and has nothing left to animate. Snap it back to the
+        // hidden state with the transition switched off, then re-reveal so the
+        // animation runs from the start.
+        replayReveal(id) {
+            const inner = document.querySelector(`${id} .section`);
+            if (!inner) return;
+
+            inner.style.transition = 'none';
+            inner.classList.remove('visible', 'from-above');
+            void inner.offsetWidth; // commit the hidden state instantly
+
+            inner.style.transition = '';
+            void inner.offsetWidth; // commit the restored transition
+            inner.classList.add('visible');
+        },
+
         onSwipeEnd(event, key) {
             if (this.swipeStartX === null) return;
             const dx = event.clientX - this.swipeStartX;
@@ -301,7 +318,7 @@ export default{
                     }
                 });
             },
-            { threshold: 0 }
+            { threshold: 0, rootMargin: '-15% 0px -10%'}
         );
         wrappers.forEach(wrapper => {
             this.observer.observe(wrapper);
