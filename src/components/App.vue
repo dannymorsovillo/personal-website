@@ -1,13 +1,12 @@
 
 <template>
    <div>
-        <nav>
+    <nav class="glass-nav">
             <a href="#about" @click="replayReveal('#about')"><span>about me</span></a>
             <a href="#languages-and-tools" @click="replayReveal('#languages-and-tools')"><span>languages and tools</span></a>
             <a href="#projects" @click="replayReveal('#projects')"><span>projects</span></a>
             <a href="#contact" @click="replayReveal('#contact')"><span>contact me</span></a>
-        </nav>
-
+     </nav>
         <section class="section-wrapper" id="about">
         <div class="section">
         <div class="header">
@@ -17,7 +16,7 @@
         <div class = "headshot-wrapper">
             <img src="/headshot.png" class="headshot" width="200" height= "200">
              <p style="text-align: center;">
-                 <span ref="typed2" class="typed"></span>
+               
              </p>
         </div>
         <div class = "bio">
@@ -199,6 +198,8 @@
 
 <script>
 import Typed from 'typed.js'
+import liquidGL from "liquid-gl"
+
 export default{
     data() {
         return {
@@ -283,22 +284,27 @@ export default{
         },
     },
 
-    mounted() {
+    async mounted() {
         const t1 = this.$refs.typed1;
-        const t2 = this.$refs.typed2;
         this.typed1 = new Typed(t1, {
             strings: ["hello", "i'm danny", "welcome to", "my portfolio website" ],
             typedSpeed:10,
             backSpeed:10,
             onComplete: () => {
-
-            this.typed2 = new Typed(t2, {
-                strings: ["this website is to", "showcase projects", "and get to know me", "just a little", "i'm currently", "a software engineer intern", "at state farm", "on the", "mobile app team" ],
-                typedSpeed:10,
-                backSpeed:10,
-             });
          }
     });
+
+        const glassEffect = liquidGL({
+            refraction: 0.01, 
+            bevelDepth: 0.052, 
+            bevelWidth: 0.211, 
+            frost: 2, 
+            shadow: true, 
+            specular: true,
+            target: ".glass-nav",
+            snapshot: "body",
+           });
+
 
 
         const wrappers = document.querySelectorAll('.section-wrapper, .project-wrapper');
@@ -327,10 +333,6 @@ export default{
     beforeUnmount() {
         if (this.typed1) {
             this.typed1.destroy();
-        }
-
-        if (this.typed2) {
-            this.typed2.destroy();
         }
 
         if (this.observer) {
@@ -420,20 +422,26 @@ export default{
         z-index: 100;
         display: flex;
         justify-content: center;
-        width: 100%;
+        width: max-content;
         box-sizing: border-box;
         /* vertical padding lives on the links so their hit area fills the bar */
         padding: 0 15px;
         background-color: var(--color-nav);
         font-family: var(--font-mono);
         font-size: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 20px;
     }
-
-    /* The link itself never moves — its box is the hover target, and it fills the
-       full height of the bar so the cursor stays inside it. Only the inner span
-       animates, which stops the lift from sliding out from under the pointer and
-       retriggering hover over and over. */
+    
+    .glass-nav {
+        position:fixed;
+        z-index:100;
+        top:20px;
+    }
+   
     nav a {
+        pointer-events: auto;
         display: flex;
         align-items: center;
         padding: 15px 10px;
@@ -493,7 +501,7 @@ export default{
     .section.visible,
     .project.visible {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: none;
     }
 
     /* ----------------------------------------------------------------------
