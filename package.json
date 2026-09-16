@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ybouane/liquidglass": "^1.0.3",
     "jquery": "^4.0.0",
     "liquid-gl": "^2.2.4",
     "typed.js": "^3.0.0",
