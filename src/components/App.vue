@@ -67,12 +67,14 @@
                 <h2>fairwayd iOS App</h2>
                 <p> mobile application that helps golfers find new courses, review courses, and receive AI based recommendations.</p>
                 <div class="carousel portrait">
+                    <div class="carousel-liquid-glass">
                     <button
                         class="carousel-arrow prev"
                         type="button"
                         aria-label="previous image"
                         @click="prev('fairwayd')"
                     >&#8249;</button>
+                    </div>
                     <div
                         class="carousel-viewport"
                         @pointerdown="onSwipeStart"
@@ -92,22 +94,27 @@
                             >
                         </div>
                     </div>
-                    <button
-                        class="carousel-arrow next"
-                        type="button"
-                        aria-label="next image"
-                        @click="next('fairwayd')"
-                    >&#8250;</button>
-                    <div class="carousel-dots">
+                    <div class="carousel-liquid-glass">
                         <button
+                            class="carousel-arrow next"
+                            type="button"
+                            aria-label="next image"
+                            @click="next('fairwayd')"
+                        >&#8250;</button>
+                    </div>
+                    <div class="carousel-dots">
+                        <div class="carousel-liquid-glass"
                             v-for="(_, i) in galleries.fairwayd.images"
                             :key="i"
+                        >
+                        <button
                             type="button"
                             class="carousel-dot"
                             :class="{ active: galleries.fairwayd.index === i }"
                             :aria-label="`show image ${i + 1}`"
                             @click="select('fairwayd', i)"
                         ></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -117,12 +124,14 @@
                 <h2><a href="https://makemathcounttoday.com/">make math count </a></h2>
                 <p>a website for a math workshop sequence that provides educators with a streamlined process to guide their students to success.</p>
                 <div class="carousel landscape">
+                    <div class="carousel-liquid-glass">
                     <button
                         class="carousel-arrow prev"
                         type="button"
                         aria-label="previous image"
                         @click="prev('math')"
                     >&#8249;</button>
+                    </div>
                     <div
                         class="carousel-viewport"
                         @pointerdown="onSwipeStart"
@@ -142,22 +151,27 @@
                             >
                         </div>
                     </div>
-                    <button
-                        class="carousel-arrow next"
-                        type="button"
-                        aria-label="next image"
-                        @click="next('math')"
-                    >&#8250;</button>
-                    <div class="carousel-dots">
+                    <div class="carousel-liquid-glass">
                         <button
+                            class="carousel-arrow next"
+                            type="button"
+                            aria-label="next image"
+                            @click="next('math')"
+                        >&#8250;</button>
+                    </div>
+                    <div class="carousel-dots">
+                        <div class="carousel-liquid-glass"
                             v-for="(_, i) in galleries.math.images"
                             :key="i"
+                        >
+                        <button
                             type="button"
                             class="carousel-dot"
                             :class="{ active: galleries.math.index === i }"
                             :aria-label="`show image ${i + 1}`"
                             @click="select('math', i)"
                         ></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -369,7 +383,6 @@ export default{
         height: 100%;
         background: linear-gradient(to bottom, black, grey);
         background-attachment: fixed;
-        overscroll-behavior: none;
     }
 </style>
 
@@ -611,7 +624,7 @@ export default{
         padding: 0;
         border: none;
         border-radius: 50%;
-        background: rgba(0, 0, 0, 0.5);
+        background: transparent;
         color: var(--color-text);
         font-size: 24px;
         line-height: 1;
@@ -619,7 +632,31 @@ export default{
         transition: background 0.2s ease;
     }
 
-    .carousel-arrow:hover { background: rgba(0, 0, 0, 0.8); }
+    .carousel-arrow:hover { background: rgba(255, 255, 255, 0.15); }
+
+    .carousel-liquid-glass {
+        position: relative;
+        display: inline-flex;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(12px) saturate(150%);
+        -webkit-backdrop-filter: blur(12px) saturate(150%);
+        box-shadow:
+            inset 0 0 0 1px rgba(255, 255, 255, 0.25),
+            0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .carousel-liquid-glass > button {
+        position: relative;
+        z-index: 3;
+        pointer-events: auto;
+    }
+
+    .carousel-liquid-glass > button:focus-visible {
+        outline: 2px solid white;
+        outline-offset: 3px;
+    }
 
     /* dots take the full row width so they wrap under the image + arrows,
        and are clickable to jump straight to any slide */
